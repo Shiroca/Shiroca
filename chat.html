@@ -197,6 +197,14 @@ chat.scrollTop=chat.scrollHeight;
 
 }
   function getShirocaReply(userText){
+    const cleanText = userText.trim();
+const lower = cleanText.toLowerCase();
+
+if(lower.startsWith("my name is")){
+const name = cleanText.substring(11).trim();
+localStorage.setItem("shirocaUserName", name);
+return "I'll remember that. Your name is " + name + ".";
+}
     if(userText.toLowerCase().startsWith("my name is")){
 const name = userText.substring(11).trim();
 localStorage.setItem("shirocaUserName", name);
