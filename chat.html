@@ -105,13 +105,13 @@ padding:14px;
 
 <body>
 
-<div class="header">
+<div class="header" id="header">
 Shiroca AI
 </div>
 
 <div class="chat" id="chat">
 
-<div class="message ai">
+<div class="message ai" id="welcomeMessage">
 Hello. I'm Shiroca. How are you today?
 </div>
 
@@ -133,6 +133,31 @@ Send
 </div>
 
 <script>
+  const params = new URLSearchParams(window.location.search);
+const type = params.get("type") || "companion";
+
+const header = document.getElementById("header");
+const welcome = document.getElementById("welcomeMessage");
+
+if(type === "girlfriend"){
+header.textContent = "Shiroca Girlfriend";
+welcome.textContent = "Hi love. I'm here with you. How was your day?";
+}
+
+if(type === "boyfriend"){
+header.textContent = "Shiroca Boyfriend";
+welcome.textContent = "Hey. I'm here for you. Tell me what's on your mind.";
+}
+
+if(type === "friend"){
+header.textContent = "Shiroca Friend";
+welcome.textContent = "Hey bestie. What's going on today?";
+}
+
+if(type === "mentor"){
+header.textContent = "Shiroca Mentor";
+welcome.textContent = "Welcome. Tell me your goal, and we'll work on it together.";
+}
 
 function sendMessage(){
 
