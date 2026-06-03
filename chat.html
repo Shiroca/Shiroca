@@ -197,6 +197,13 @@ chat.scrollTop=chat.scrollHeight;
 
 }
   function getShirocaReply(userText){
+    if(userText.toLowerCase().startsWith("my name is")){
+const name = userText.substring(11).trim();
+localStorage.setItem("shirocaUserName", name);
+return "I’ll remember that. Your name is " + name + ".";
+}
+
+const savedName = localStorage.getItem("shirocaUserName");
 
 const lower=userText.toLowerCase();
 
@@ -214,6 +221,10 @@ return "That word means a lot. I want Shiroca to feel warm, real and meaningful 
 
 if(lower.includes("name")){
 return "My name is Shiroca. I was built to remember you, understand you and grow with you.";
+}
+
+if(savedName){
+return "I hear you, " + savedName + ". Tell me more, I want to understand you better.";
 }
 
 return "I hear you. Tell me more, I want to understand you better.";
