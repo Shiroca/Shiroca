@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -7,7 +6,6 @@
 <title>Shiroca Chat</title>
 
 <style>
-
 *{
 box-sizing:border-box;
 }
@@ -84,7 +82,6 @@ font-size:16px;
 }
 
 @media(max-width:600px){
-
 .header{
 font-size:20px;
 }
@@ -96,11 +93,8 @@ max-width:90%;
 button{
 padding:14px;
 }
-
 }
-
 </style>
-
 </head>
 
 <body>
@@ -110,30 +104,18 @@ Shiroca AI
 </div>
 
 <div class="chat" id="chat">
-
 <div class="message ai" id="welcomeMessage">
 Hello. I'm Shiroca. How are you today?
 </div>
-
 </div>
 
 <div class="input-area">
-
-<input
-id="messageInput"
-type="text"
-placeholder="Type a message..."
-
->
-
-<button onclick="sendMessage()">
-Send
-</button>
-
+<input id="messageInput" type="text" placeholder="Type a message...">
+<button onclick="sendMessage()">Send</button>
 </div>
 
 <script>
-  const params = new URLSearchParams(window.location.search);
+const params = new URLSearchParams(window.location.search);
 const type = params.get("type") || "companion";
 
 const header = document.getElementById("header");
@@ -160,62 +142,51 @@ welcome.textContent = "Welcome. Tell me your goal, and we'll work on it together
 }
 
 function sendMessage(){
+const input = document.getElementById("messageInput");
+const text = input.value.trim();
 
-const input=document.getElementById("messageInput");
+if(text === ""){
+return;
+}
 
-const text=input.value.trim();
+const chat = document.getElementById("chat");
 
-if(text==="") return;
+const userMessage = document.createElement("div");
+userMessage.className = "message user";
+userMessage.textContent = text;
+chat.appendChild(userMessage);
 
-const chat=document.getElementById("chat");
-
-const message=document.createElement("div");
-
-message.className="message user";
-
-message.textContent=text;
-
-chat.appendChild(message);
-
-chat.scrollTop=chat.scrollHeight;
-
-input.value="";
+chat.scrollTop = chat.scrollHeight;
+input.value = "";
 
 setTimeout(function(){
-
-const aiMessage=document.createElement("div");
-
-aiMessage.className="message ai";
-
-aiMessage.textContent=getShirocaReply(text);
-
+const aiMessage = document.createElement("div");
+aiMessage.className = "message ai";
+aiMessage.textContent = getShirocaReply(text);
 chat.appendChild(aiMessage);
-
-chat.scrollTop=chat.scrollHeight;
-
+chat.scrollTop = chat.scrollHeight;
 },700);
-
 }
-  function getShirocaReply(userText){
-    const cleanText = userText.trim();
+
+function getShirocaReply(userText){
+const cleanText = userText.trim();
 const lower = cleanText.toLowerCase();
 
 if(lower.startsWith("my name is")){
 const name = cleanText.substring(11).trim();
+
+if(name !== ""){
 localStorage.setItem("shirocaUserName", name);
 return "I'll remember that. Your name is " + name + ".";
 }
-    if(userText.toLowerCase().startsWith("my name is")){
-const name = userText.substring(11).trim();
-localStorage.setItem("shirocaUserName", name);
-return "I’ll remember that. Your name is " + name + ".";
 }
 
 const savedName = localStorage.getItem("shirocaUserName");
 
-const lower=userText.toLowerCase();
-
 if(lower.includes("hello") || lower.includes("hi")){
+if(savedName){
+return "Hey " + savedName + ", I'm happy you're here. Tell me what you're thinking about.";
+}
 return "Hey, I'm happy you're here. Tell me what you're thinking about.";
 }
 
@@ -225,6 +196,13 @@ return "I'm sorry you're feeling that way. I'm here with you. Want to talk about
 
 if(lower.includes("love")){
 return "That word means a lot. I want Shiroca to feel warm, real and meaningful for you.";
+}
+
+if(lower.includes("what is my name") || lower.includes("do you remember my name")){
+if(savedName){
+return "Of course. Your name is " + savedName + ".";
+}
+return "I don't know your name yet. Tell me by writing: my name is ...";
 }
 
 if(lower.includes("name")){
@@ -238,16 +216,11 @@ return "I hear you, " + savedName + ". Tell me more, I want to understand you be
 return "I hear you. Tell me more, I want to understand you better.";
 }
 
-document
-.getElementById("messageInput")
-.addEventListener("keypress",function(e){
-
-if(e.key==="Enter"){
+document.getElementById("messageInput").addEventListener("keydown", function(e){
+if(e.key === "Enter"){
 sendMessage();
 }
-
 });
-
 </script>
 
 </body>
